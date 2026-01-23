@@ -9,8 +9,15 @@ using static System.Linq.Expressions.Expression;
 namespace FastExpressionCompiler.IssueTests;
 #endif
 
-public struct Issue490_ref_struct_conditional : ITestX
+public struct Issue490_ref_struct_conditional : ITest, ITestX
 {
+    public int Run()
+    {
+        Return_true_when_token_is_null();
+        Return_false_when_token_isnot_null();
+        return 1;
+    }
+
     public void Run(TestRun t)
     {
         Return_true_when_token_is_null(t);
@@ -31,7 +38,7 @@ public struct Issue490_ref_struct_conditional : ITestX
         public MyJsonTokenType TokenType { get; set; }
     }
 
-    public void Return_true_when_token_is_null(TestContext t)
+    public void Return_true_when_token_is_null(TestContext t = default)
     {
         var readerParam = Parameter(typeof(MyJsonReader).MakeByRefType(), "reader");
         var tokenType = Property(readerParam, nameof(MyJsonReader.TokenType));
@@ -52,7 +59,7 @@ public struct Issue490_ref_struct_conditional : ITestX
         t.AreEqual(true, result);
     }
 
-    public void Return_false_when_token_isnot_null(TestContext t)
+    public void Return_false_when_token_isnot_null(TestContext t = default)
     {
         var readerParam = Parameter(typeof(MyJsonReader).MakeByRefType(), "reader");
         var tokenType = Property(readerParam, nameof(MyJsonReader.TokenType));
